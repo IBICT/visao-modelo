@@ -1,0 +1,14 @@
+{
+  "name": "visao_modules",
+  "version": "1.0.0",
+  "description": "Visualização do visao",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "serve": "^11.0.1"
+  }
+}
