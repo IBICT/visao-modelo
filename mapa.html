@@ -83,6 +83,24 @@ body {
 .input-leaflet {
     color: #59c9a8;
 }
+.leaflet-top .leaflet-control-layers.leaflet-control {
+		position: relative;
+    top: 77.8vh;
+    width: 30px;
+    height: 30px;
+}
+.leaflet-control-layers-toggle {
+	/* background-image: url(../content/images/mapas.png)!important; */ 
+	width: 30px !important;
+	height: 30px !important;
+}
+.leaflet-control-layers-expanded:first-child {
+    position: absolute !important;
+    top: 65.5vh !important;
+    width: 180px !important;
+    height: 150px !important;
+
+}
 .title-popup {
     color: #3d3d3d;
     font-size: 15px;
@@ -208,9 +226,9 @@ h5.mb-0 button.btn.btn-link {
     position: absolute;
     right: 43%;
     bottom: 35%;
-    font-family: 'Roboto Condensed'; 
+    font-family: 'Roboto Condensed';
 }
-    
+
 /* map buttons */
 
 .leaflet-right .leaflet-control:first-child,
@@ -392,7 +410,26 @@ h5.mb-0 button.btn.btn-link {
     font-weight: 500;
     line-height: normal;
 }
-
+.filtro-selecionado {
+    margin-right: 5px;
+    padding: 2px 12px;
+    background: #59C9A8;
+    border-radius: 10px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    color: #FFFFFF;
+}
+.fa-info {
+	background-color: #59C9A8;
+	padding: 3.5px 6.5px;
+	color: white;
+	border-radius: 4px;
+	font-size: 8px;
+	position: relative;
+}
 .i-icon {
     margin-right: 5px;
 }
@@ -599,7 +636,7 @@ h5.mb-0 button.btn.btn-link {
 }
 
 	</style>
-	
+
 
 </head>
 <body>
@@ -628,9 +665,9 @@ h5.mb-0 button.btn.btn-link {
 	  </div>
 	</div>
 	<script>
-	
+
 const host = "http://localhost:3000";
-	
+
 // Iniciar mapa objeto sem zoom, latitude, longitude, zoom inicial
 var map = L.map('map', {
         zoomControl:false,
@@ -761,7 +798,7 @@ function genereteListIndicators(){
 								'						<div style="border: 0;" class="card-header" id="headingCard'+ item.id +'">' +
 								'							<h5 class="mb-0">' +
 								'								<button style="background-color: #fff;" class="btn btn-link" data-toggle="collapse" data-target="#collapse'+ item.id  +'" aria-expanded="true" aria-controls="collapseOne">' +
-								'									<div class="robotoFamily" style="display: inline-block; text-overflow: ellipsis; overflow: hidden; width: 200px; height: 18px; white-space: nowrap;" title="'+ item.name +'">'+ item.name +' </div><i class="pull-right fa fa-angle-right" aria-hidden="true"></i>' +
+								'									<div class="robotoFamily " style="display: inline-block; text-overflow: ellipsis; overflow: hidden; width: 200px; height: 18px; white-space: nowrap;" title="'+ item.name +'">'+ item.name +' </div><i class="pull-right fa fa-angle-right" aria-hidden="true"></i>' +
 								'								</button>' +
 								'							</h5>' +
 								'						</div>' +
@@ -1424,8 +1461,8 @@ function makeMap() {
                     indicadorMapControl.onAdd = function (map) {
                         this._div = L.DomUtil.create('div', 'indicadorMapControl');
                         this._div.innerHTML = '<div style="cursor: pointer;color:#59C9A8; font-size:16px;" onclick="infoAboutIndicator()" class="" id="indicadorMapControl" title="Menu">' +
-                            '<span class="robotoFamily">' +
-                            dataJson[0].name.value + ' <span style="background-color: #59C9A8; padding:3.5px 6.5px; color: white; border-radius: 4px; font-size:12px; position:relative; top:-2.5px;" class="fa fa-info"></span>' +
+                            '<span class="robotoFamily filtro-selecionado">' +
+                            dataJson[0].name.value + ' <span style="background-color: #59C9A8; padding:3.5px 6.5px; color: white; border-radius: 4px; font-size:8px; position:relative;top: -2.5px;" class="fa fa-info"></span>' +
                             '</span></div>';
 
                         $("#footer-sidebar-filtros .indicador").html(this._div.innerHTML);
@@ -1585,7 +1622,7 @@ function makeMap() {
 
 				return this._div;
             }
-            
+
 			limparMapControl.addTo(map);
 		});
 
@@ -1690,7 +1727,7 @@ function loadFiltrosSelecionados(){
     var filtrosSelecionados =
         '<div class="iconFilter float-right" onclick="infoAboutIndicator()" id="filtroMapControl" title="filtro">' +
             '<span class="button-state state-get-center get-center-active robotoFamily">'+
-                '<span class="fa fa-info"></span> Filtros selecionados' +
+                'Filtros selecionados <span class="fa fa-info"></span>' +
             '</span>'+
         '</div>';
 
