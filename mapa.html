@@ -741,8 +741,35 @@ function modalDetail(data){
 	$('#exampleModal').modal('show');
 }
 
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+};
+
+
 function getGeoJson(){
 	//usage in request
+	
+	//console.log(getUrlParameter('grupCategory'));
+	
+	$.ajax({
+		url: host+'/api/grup-categories/'+getUrlParameter('grupCategory'),
+		dataType: 'json',
+		success: function(data) {
+			console.log(data);
+		}
+	});
+	
 	$.ajax({
 		url: host+'/map/estado.json',
 		dataType: 'json',
