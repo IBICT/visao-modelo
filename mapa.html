@@ -731,6 +731,7 @@ var filtrosId, layersId;
 var indicadorSelecionado;
 var filtrosPesquisados = new Map();
 var indicadorAtual;
+var istance;
 
 getGeoJson();
 $(".leaflet-right.leaflet-bottom").css('right', '340px');
@@ -761,7 +762,7 @@ function getGeoJson(){
 	//usage in request
 	
 	//console.log(getUrlParameter('grupCategory'));
-	
+	/*
 	$.ajax({
 		url: host+'/api/grup-categories/'+getUrlParameter('grupCategory'),
 		dataType: 'json',
@@ -769,42 +770,88 @@ function getGeoJson(){
 			console.log(data);
 		}
 	});
+	*/
 	
+	//http://teste.visao.ibict.br/api/categories?id.in=1&id.in=2&id.in=3&id.in=4
+	/*
+
+	var already_loaded = new Object();  // used to track which accordions have already been loaded
+
+$(function() {
+    $( "#accordion" ).accordion({
+        collapsible: true,
+        active: false,
+        //heightStyle: 'fill', // http://jqueryui.com/accordion/#fillspace  -- Just sets the height of the accordion to the height of it's parent container.  We need a way to change the height of the parent to that of the newly added content.
+        activate: function (e, ui) {
+            // only fire when the accordion is opening..
+            if(ui.newHeader.length>0){                
+                // only retrieve the remote content once..
+                if(! already_loaded[ui.newHeader[0].id]==1){
+                    var srcObj = $(ui.newHeader[0]).children('a');
+                    var url = srcObj.attr('href');
+                    var folder = srcObj.attr('data-folder');
+                    //$.get(url, function (data){  // if you wanted to use the GET method uncomment this and comment the next line.  Be sure to add any needed query string parameters to the URL.
+                    $.post(url, {doCmd:'getFolderFiles', folder:srcObj.attr('data-folder')}, function (data){
+                        $(ui.newHeader[0]).next().html(data);
+                        var contentDiv = $(ui.newHeader[0]).next()[0];
+                        $('#'+contentDiv.id).height(contentDiv.scrollHeight);
+                        //$("#accordion").accordion("refresh"); // http://api.jqueryui.com/accordion/#method-refresh -- The documentation isn't clear on this but this only refreshes added/removed panels.  Does not refresh existing panels with newly added content.
+                        already_loaded[ui.newHeader[0].id]=1; // keep track of the loaded accordions
+                    });
+                }
+            }
+        }
+
+    });
+
+});
+	
+	
+	*/
 	$.ajax({
-		url: host+'/map/estado.json',
+		url: host+'/api/grup-categories/'+getUrlParameter('grupCategory'),
 		dataType: 'json',
 		success: function(data) {
-			estado = data;
+			istance = data;
+			categories = istance.categories;
+			var urlIndicator = '';
+			categories.filter(function (categoria) {
+				return categoria.type === 'INDICATOR';
+			}).forEach(function(item) {
+				urlIndicator += '&categoryId.in='+item.id;
+			});
+			urlIndicator = urlIndicator.replace('&','?');
+			console.log(urlIndicator);
 			$.ajax({
-				url: host+'/map/municipio.json',
+				url: host+'/map/estado.json',
 				dataType: 'json',
 				success: function(data) {
-					municipio = data;
+					estado = data;
 					$.ajax({
-						url: host+'/api/categories',
+						url: host+'/map/municipio.json',
 						dataType: 'json',
 						success: function(data) {
-							categories = data;
+							municipio = data;
 							$.ajax({
-								url: host+'/api/namesPublic',
+								url: host+'/api/grup-indicators'+urlIndicator,
 								dataType: 'json',
 								success: function(data) {
 									indicatorNames = data;
-                                    $.ajax({
-                                        url: host+'/api/filters',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            filterArray = data;
-                                            $.ajax({
-                                                url: host+'/api/group-layers',
-                                                dataType: 'json',
-                                                success: function (data) {
-                                                    groupLayer = data;
-                                                    makeMap();
-                                                }
-                                            });
-                                        }
-                                    });
+									$.ajax({
+										url: host+'/api/filters',
+										dataType: 'json',
+										success: function (data) {
+											filterArray = data;
+											$.ajax({
+												url: host+'/api/group-layers',
+												dataType: 'json',
+												success: function (data) {
+													groupLayer = data;
+													makeMap();
+												}
+											});
+										}
+									});
 								}
 							});
 						}
