@@ -664,14 +664,25 @@ h5.mb-0 button.btn.btn-link {
 		</div>
 	  </div>
 	</div>
+	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<script>
 
+//const host = "http://beta.visao.ibict.br";
 const host = "http://localhost:3000";
+var apiKey = window.sessionStorage.getItem('jhi-authenticationtoken');
+if(apiKey){
+apiKey = apiKey.substring(1, apiKey.length - 1);
+}
+//console.log(apiKey);
 
 // Iniciar mapa objeto sem zoom, latitude, longitude, zoom inicial
 var map = L.map('map', {
         zoomControl:false,
-        minZoom: 5,
         doubleClickZoom: false
     }).setView([-15, -50], 4);
 // map.setMaxBounds(map.getBounds());
@@ -731,6 +742,7 @@ var filtrosId, layersId;
 var indicadorSelecionado;
 var filtrosPesquisados = new Map();
 var indicadorAtual;
+var istance;
 
 getGeoJson();
 $(".leaflet-right.leaflet-bottom").css('right', '340px');
@@ -741,45 +753,143 @@ function modalDetail(data){
 	$('#exampleModal').modal('show');
 }
 
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+};
+
+
 function getGeoJson(){
 	//usage in request
+	
+	//console.log(getUrlParameter('grupCategory'));
+	/*
 	$.ajax({
-		url: host+'/map/estado.json',
+		url: host+'/api/grup-categories/'+getUrlParameter('grupCategory'),
 		dataType: 'json',
 		success: function(data) {
-			estado = data;
+			console.log(data);
+		}
+	});
+	*/
+	
+	//http://teste.visao.ibict.br/api/categories?id.in=1&id.in=2&id.in=3&id.in=4
+	/*
+
+	var already_loaded = new Object();  // used to track which accordions have already been loaded
+
+$(function() {
+    $( "#accordion" ).accordion({
+        collapsible: true,
+        active: false,
+        //heightStyle: 'fill', // http://jqueryui.com/accordion/#fillspace  -- Just sets the height of the accordion to the height of it's parent container.  We need a way to change the height of the parent to that of the newly added content.
+        activate: function (e, ui) {
+            // only fire when the accordion is opening..
+            if(ui.newHeader.length>0){                
+                // only retrieve the remote content once..
+                if(! already_loaded[ui.newHeader[0].id]==1){
+                    var srcObj = $(ui.newHeader[0]).children('a');
+                    var url = srcObj.attr('href');
+                    var folder = srcObj.attr('data-folder');
+                    //$.get(url, function (data){  // if you wanted to use the GET method uncomment this and comment the next line.  Be sure to add any needed query string parameters to the URL.
+                    $.post(url, {doCmd:'getFolderFiles', folder:srcObj.attr('data-folder')}, function (data){
+                        $(ui.newHeader[0]).next().html(data);
+                        var contentDiv = $(ui.newHeader[0]).next()[0];
+                        $('#'+contentDiv.id).height(contentDiv.scrollHeight);
+                        //$("#accordion").accordion("refresh"); // http://api.jqueryui.com/accordion/#method-refresh -- The documentation isn't clear on this but this only refreshes added/removed panels.  Does not refresh existing panels with newly added content.
+                        already_loaded[ui.newHeader[0].id]=1; // keep track of the loaded accordions
+                    });
+                }
+            }
+        }
+
+    });
+
+});
+	
+	
+	*/
+	$.ajax({
+		url: host+'/api/grup-categories/'+getUrlParameter('grupCategory'),
+		dataType: 'json',
+		success: function(data) {
+			istance = data;
+			categories = istance.categories;
+			//var urlIndicator = '';
+			//console.log(categories);
+			
+			categories.filter(function (categoria) {
+				return categoria.type === 'INDICATOR';
+			}).forEach(function(item) {
+				$.ajax({
+					headers: {
+						"Authorization": "Bearer " + apiKey
+					},
+					url: host+'/api/grup-indicators?categoryId.equals='+item.id,
+					dataType: 'json',
+					success: function(data) {
+						indicatorNames = data;
+						//console.log(data);
+						item['grup-indicators'] = data;
+					}
+				});
+			});
+			categories.filter(function (categoria) {
+				return categoria.type === 'FILTER';
+			}).forEach(function(item) {
+				$.ajax({
+					headers: {
+						"Authorization": "Bearer " + apiKey
+					},
+					url: host+'/api/geographic-filters?categoryId.equals='+item.id,
+					dataType: 'json',
+					success: function(data) {
+						indicatorNames = data;
+						//console.log(data);
+						item['geographic-filters'] = data;
+					}
+				});
+			});
+			categories.filter(function (categoria) {
+				return categoria.type === 'LAYER';
+			}).forEach(function(item) {
+				$.ajax({
+					headers: {
+						"Authorization": "Bearer " + apiKey
+					},
+					url: host+'/api/group-layers?categoryId.equals='+item.id,
+					dataType: 'json',
+					success: function(data) {
+						indicatorNames = data;
+						//console.log(data);
+						item['group-layers'] = data;
+					}
+				});
+			});
+			console.log(categories);
+			//urlIndicator = urlIndicator.replace('&','?');
+			//console.log(urlIndicator);
 			$.ajax({
-				url: host+'/map/municipio.json',
+				url: host+'/map/estado.json',
 				dataType: 'json',
 				success: function(data) {
-					municipio = data;
+					estado = data;
 					$.ajax({
-						url: host+'/api/categories',
+						url: host+'/map/municipio.json',
 						dataType: 'json',
 						success: function(data) {
-							categories = data;
-							$.ajax({
-								url: host+'/api/namesPublic',
-								dataType: 'json',
-								success: function(data) {
-									indicatorNames = data;
-                                    $.ajax({
-                                        url: host+'/api/filters',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            filterArray = data;
-                                            $.ajax({
-                                                url: host+'/api/group-layers',
-                                                dataType: 'json',
-                                                success: function (data) {
-                                                    groupLayer = data;
-                                                    makeMap();
-                                                }
-                                            });
-                                        }
-                                    });
-								}
-							});
+							municipio = data;
+							makeMap();
 						}
 					});
 				}
@@ -805,13 +915,11 @@ function genereteListIndicators(){
 								'						<div id="collapse'+ item.id  +'" class="collapse" aria-labelledby="headingCard'+ item.id +'" data-parent="#accordion">' +
 								'							<div class="card-body">';
 
-		indicatorNames.filter(function(indicator) {
-			return indicator.category.name == item.name;
-		}).forEach(function(indicator) {
+		item['grup-indicators'].forEach(function(indicator) {
             indicatorCategory += 	'								<div class="form-check">' +
                                     '                                   <div class="custom-control custom-radio">' +
                                     '                                       <input type="radio" id="indicador'+ indicator.id +'" name="indicator" class="custom-control-input form-check-input" value="'+indicator.id+'">' +
-                                    '                                       <label class="custom-control-label form-check-label robotoFamily" for="indicador'+ indicator.id +'">'+ indicator.value +'</label>' +
+                                    '                                       <label class="custom-control-label form-check-label robotoFamily" for="indicador'+ indicator.id +'">'+ indicator.name +'</label>' +
                                     '                                   </div>' +
 									'								</div>';
 		});
@@ -841,9 +949,7 @@ function generateListFilters(){
             '   <div id="collapse'+ item.id  +'" class="collapse" aria-labelledby="headingCard'+ item.id +'" data-parent="#accordionFilter">' +
             '	    <div class="card-body">';
 
-        filterArray.filter(function(filter) {
-            return filter.category.id == item.id;
-        }).forEach(function(item) {
+        item['geographic-filters'].forEach(function(item) {
             filterCategory +=
                 '       <div class="form-check-input" style="display: contents">'+
                 '           <div class="custom-control custom-checkbox">'+
@@ -878,9 +984,7 @@ function genereteListLayer(){
             '						<div id="collapsLayere'+ item.id  +'" class="collapse" aria-labelledby="headingCardLayer'+ item.id +'" data-parent="#accordion">' +
             '							<div class="card-body">';
 
-        groupLayer.filter(function(layer) {
-            return layer.category.name == item.name;
-        }).forEach(function(layer) {
+        item['group-layers'].forEach(function(layer) {
             layerCategory += 	'				<div class="form-check">' +
                 '                                   <div class="custom-control custom-checkbox">' +
                 '									    <input class="custom-control-input form-check-input layerCheckbox" name="layerCheckbox" type="checkbox" value="'+ layer.id +'" id="layer'+ layer.id +'" />' +
@@ -1061,8 +1165,8 @@ function makeChart(rangeMap2) {
 
 			    var popupValue = '<div onclick="modalDetail(\''+feature.geoCode+'\')">' +
                     '<p id="box_'+feature.geoCode+'" class="title-popup">'+feature.properties.name+'</p>' +
-                    '<p id="both" style="margin-bottom: 0">'+arrayCompleto[0].name.value+'</p>' +
-                    '<p style="font-size: 16px; margin-top: 0; font-weight: bold">'+getFormattedPrintValue(arrayCompleto[0].name.typePresentation, indicatorArray[feature.geoCode])+'</p>' +
+                    '<p id="both" style="margin-bottom: 0">'+arrayCompleto[0].group.name+'</p>' +
+                    '<p style="font-size: 16px; margin-top: 0; font-weight: bold">'+getFormattedPrintValue(arrayCompleto[0].group.typePresentation, indicatorArray[feature.geoCode])+'</p>' +
                     '<div style="text-align: center">';
 
 			    var filtrosAplicados = filtrosPesquisados.get(parseInt(feature.geoCode));
@@ -1089,7 +1193,7 @@ function makeChart(rangeMap2) {
 			} else {
                 var popupValue = '<div>' +
                     '<p id="box_'+feature.geoCode+'" class="title-popup">'+feature.properties.name+'</p>' +
-                    '<p id="both" style="margin-bottom: 0">'+arrayCompleto[0].name.value+'</p>' +
+                    '<p id="both" style="margin-bottom: 0">'+arrayCompleto[0].group.name+'</p>' +
                     '<p style="font-size: 16px; margin-top: 0; font-weight: bold">Não há dados sobre a região selecionada nesse período.</p>' +
                     '<div style="text-align: center">' +
                     '</div> </div>';
@@ -1106,7 +1210,11 @@ function makeChart(rangeMap2) {
 	function getFormattedPrintValue(typePresentation, valueToShow){
 	    if(typePresentation !== null && typePresentation.display.includes("$")){
 	        return typePresentation.display + valueToShow.toLocaleString('pt-br', {minimumFractionDigits: 2});
-        } else {
+        } if(isJson(typePresentation.display)) {
+			var display = JSON.parse(typePresentation.display);
+            return display[valueToShow];
+        }
+		else {
             return valueToShow.toLocaleString('pt-br');
         }
     }
@@ -1115,6 +1223,25 @@ function makeChart(rangeMap2) {
 function updateOpacity(value) {
     group.setStyle({fillOpacity:value});
 }
+
+function isJson(item) {
+    item = typeof item !== "string"
+        ? JSON.stringify(item)
+        : item;
+
+    try {
+        item = JSON.parse(item);
+    } catch (e) {
+        return false;
+    }
+
+    if (typeof item === "object" && item !== null) {
+        return true;
+    }
+
+    return false;
+}
+
 
 function setLayer(json){
 	json.forEach(function(item) {
@@ -1171,7 +1298,10 @@ function setLayer(json){
 function setYears(nameId) {
     var yearsOptions = '';
     $.ajax({
-        url: host+'/api/yearsDistinct?&nameId.equals='+nameId,
+		headers: {
+			"Authorization": "Bearer " + apiKey
+		},
+        url: host+'/api/yearsDistinct?&groupId.equals='+nameId,
         dataType: 'json',
         async: false,
         success: function (data) {
@@ -1188,16 +1318,19 @@ function changeYear(yearOption){
 
 	var urlQuery = '';
 	if(filtrosId.size === 0){
-		urlQuery += host+'/api/indicators?yearId.equals='+yearOption.value+'&nameId.equals='+indicadorAtual;
+		urlQuery += host+'/api/indicators?yearId.equals='+yearOption.value+'&groupId.equals='+indicadorAtual;
 	} else {
 		var vetor = new Array();
 		filtrosId.forEach(function (filtro) {
 			vetor.push(filtro);
 		});
 		var stringResult = vetor.join(',');
-		urlQuery += host+'/api/indicatorsFilter?yearId.equals='+yearOption.value+'&filtersId.in='+stringResult+'&nameId.equals='+indicadorAtual;
+		urlQuery += host+'/api/indicatorsFilter?yearId.equals='+yearOption.value+'&filtersId.in='+stringResult+'&groupId.equals='+indicadorAtual;
 
 		$.ajax({
+			headers: {
+				"Authorization": "Bearer " + apiKey
+			},
 			url: host+'/api/regionsWithFilter?yearId.equals='+yearOption.value+'&filtersId.in='+stringResult,
 			dataType: 'json',
 			success: function (dataJson) {
@@ -1215,13 +1348,17 @@ function changeYear(yearOption){
 		});
 	}
 
+	console.log(urlQuery);
 	$.ajax({
-		url: urlQuery,
-		timeout: 10000,
-		error: function (xhr, ajaxOptions, thrownError) {
-			alert(xhr.status);
-			alert(thrownError);
+		headers: {
+			"Authorization": "Bearer " + apiKey
 		},
+		url: urlQuery,
+		//timeout: 10000,
+		//error: function (xhr, ajaxOptions, thrownError) {
+		//	alert(xhr.status);
+		//	alert(thrownError);
+		//},
 		dataType: 'json',
 		success: function (dataJson) {
 
@@ -1231,6 +1368,7 @@ function changeYear(yearOption){
 			}
 			else {
 				arrayCompleto = dataJson;
+				console.log(arrayCompleto);
 				municipioArray = new Array();
 				estadoArray = new Array();
 
@@ -1396,12 +1534,15 @@ function makeMap() {
 
     function loadResultMap(urlQuery) {
         $.ajax({
-            url: urlQuery,
-			timeout: 10000,
-			error: function (xhr, ajaxOptions, thrownError) {
-				alert(xhr.status);
-				alert(thrownError);
+			headers: {
+				"Authorization": "Bearer " + apiKey
 			},
+            url: urlQuery,
+			//timeout: 10000,
+			//error: function (xhr, ajaxOptions, thrownError) {
+			//	alert(xhr.status);
+			//	alert(thrownError);
+			//},
             dataType: 'json',
             success: function (dataJson) {
 
@@ -1411,6 +1552,7 @@ function makeMap() {
                 }
                 else {
                     arrayCompleto = dataJson;
+					console.log(arrayCompleto);
                     municipioArray = new Array();
                     estadoArray = new Array();
 
@@ -1462,7 +1604,7 @@ function makeMap() {
                         this._div = L.DomUtil.create('div', 'indicadorMapControl');
                         this._div.innerHTML = '<div style="cursor: pointer;color:#59C9A8; font-size:16px;" onclick="infoAboutIndicator()" class="" id="indicadorMapControl" title="Menu">' +
                             '<span class="robotoFamily filtro-selecionado">' +
-                            dataJson[0].name.value + ' <span style="background-color: #59C9A8; padding:3.5px 6.5px; color: white; border-radius: 4px; font-size:8px; position:relative;top: -2.5px;" class="fa fa-info"></span>' +
+                            dataJson[0].group.name + ' <span style="background-color: #59C9A8; padding:3.5px 6.5px; color: white; border-radius: 4px; font-size:8px; position:relative;top: -2.5px;" class="fa fa-info"></span>' +
                             '</span></div>';
 
                         $("#footer-sidebar-filtros .indicador").html(this._div.innerHTML);
@@ -1554,6 +1696,9 @@ function makeMap() {
             layersId.forEach(function (layerId) {
                 var strQuery ="?groupId.equals="+layerId+"&";
 				$.ajax({
+					headers: {
+						"Authorization": "Bearer " + apiKey
+					},
 					url: host+'/api/layers'+strQuery,
 					dataType: 'json',
 					success: function (data) {
@@ -1571,7 +1716,7 @@ function makeMap() {
 
             var urlQuery = '';
             if(filtrosId.size === 0){
-                urlQuery += host+'/api/indicators?&nameId.equals='+indicadorAtual;
+                urlQuery += host+'/api/indicators?&groupId.equals='+indicadorAtual;
                 loadResultMap(urlQuery);
 
             } else {
@@ -1580,9 +1725,12 @@ function makeMap() {
                     vetor.push(filtro);
                 });
                 var stringResult = vetor.join(',');
-                urlQuery += host+'/api/indicatorsFilter?&filtersId.in='+stringResult+'&nameId.equals='+indicadorAtual;
+                urlQuery += host+'/api/indicatorsFilter?&filtersId.in='+stringResult+'&groupId.equals='+indicadorAtual;
 
                 $.ajax({
+					headers: {
+						"Authorization": "Bearer " + apiKey
+					},
                     url: host+'/api/regionsWithFilter?&filtersId.in='+stringResult,
                     dataType: 'json',
                     success: function (dataJson) {
@@ -1637,6 +1785,9 @@ function infoAboutIndicator() {
     $('#idInfoIndicador').val(indicadorSelecionado);
 
     $.ajax({
+		headers: {
+			"Authorization": "Bearer " + apiKey
+		},
         url: host+'/api/namesPublic/'+indicadorSelecionado,
         dataType: 'json',
         success: function (dataJson) {
@@ -1649,13 +1800,16 @@ function infoAboutIndicator() {
                 '           <label style="margin-right: 5px">' + dataJson.value + ' </label>' +
                 // '          <button class="btn btn-outline-info" onclick="loadGraphic(\''+dataJson.name.value+'\')">Ver gráfico</button>' +
                 '       <div style="margin-top: 10px" class="infoIndicatorSnippet">' + dataJson.description + '</div>' +
-                "       <a href=host+'/api/indicators?&nameId.equals="+indicadorSelecionado+"' download> Download</a>" +
+                "       <a href=host+'/api/indicators?&groupId.equals="+indicadorSelecionado+"' download> Download</a>" +
                 '       <a href="#" class="mostrarMais"> Ler mais</a>' +
                 '   </div>';
             if (filtrosId.size !== 0) {
                 conteudoModal +=
                     '<div id="containerDescricaoFiltros">';
                 $.ajax({
+					headers: {
+						"Authorization": "Bearer " + apiKey
+					},
                     url: host+'/api/filtersDTO?&id.in='+Array.from(filtrosId).join(','),
                     dataType: 'json',
                     success: function (dataJson) {
