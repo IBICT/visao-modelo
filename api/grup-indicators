@@ -1,0 +1,22 @@
+[
+   {
+      "id":18,
+      "name":"Possuem Ocupação",
+      "active":true,
+      "description":"Produtor: Instituto Brasileiro de Geografia e Estatística - IBGE \\n Número total de pessoas de 10 anos ou mais que exerceram algum trabalho durante pelo menos uma hora completa na semana em que a pesquisa foi realizada.",
+      "keyWord":"ocupação; população ocupada; trabalho e renda",
+      "date":null,
+      "source":"Acesse os dados no site do produtor através do link: https://www.ibge.gov.br/estatisticas-novoportal/sociais/populacao/22827-censo-2020-censo4.html?=&t=o-que-e",
+      "dateChange":null,
+      "note":null,
+      "metaDados":null,
+      "owner":null,
+      "typePresentation":{
+         "id":2,
+         "name":"1",
+         "display":"1",
+         "description":"1"
+      },
+      "categories":null
+   }
+]
