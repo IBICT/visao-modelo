@@ -647,24 +647,34 @@ h5.mb-0 button.btn.btn-link {
 
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-            <input id="idInfoIndicador" type="number" style="display: none;">
-			<h5 class="modal-title" id="tituloModal">DETALHAMENTO DE DADOS</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body" id="modalBody">
-			<div id="modalEstadoSigla"></div>
-			<span>HABITANTES<br /><span id="modalHabitantesValor"></span></span>
-		  </div>
-		  <!--<div class="modal-footer">-->
-		  <!--</div>-->
-		</div>
-	  </div>
-	</div>
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <input id="idInfoIndicador" type="number" style="display: none;">
+              <h5 class="modal-title" id="tituloModal">DETALHAMENTO DE DADOS</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="modalBody">           
+              <div id="modalEstadoValor"></div>
+              <span>HABITANTES<br /><span id="modalHabitantesValor"></span></span><br />
+              <br />
+              <span>PIB<br /><span id="modalPIBValor"></span></span><br />
+              <span>PIB per capita<br /><span id="modalPibPerCapita"></span></span><br />
+              <br />
+              <span>Rendimento<br /><span id="modalRendimentoValor"></span></span>
+              <span>MÉDIO<br /></span>
+              <span id="modalRendimentoMedioF"></span><br />
+              <span id="modalRendimentoMedioM"></span><br />
+              <br />
+              <span>SUPERIOR COMPLETO<br /><span id="modalSuperiorCompletoValor"></span></span><br />
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--</div>-->
+          </div>
+        </div>
+      </div>
 	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 	<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -749,8 +759,14 @@ $(".leaflet-right.leaflet-bottom").css('right', '340px');
 
 function modalDetail(data){
 	$('#modalEstadoSigla').html(data);
-	$('#modalHabitantesValor').html("3.873.743");
-	$('#exampleModal').modal('show');
+    $('#modalHabitantesValor').html("3.873.743");
+    $('#modalEstadoValor').html("AM");
+    $('#modalPIBValor').html("R$88668");
+    $('#modalPibPerCapita').html("R$10");
+    $('#modalRendimentoMedioF').html("R$20");
+    $('#modalRendimentoMedioM').html("R$25");
+    $('#modalSuperiorCompletoValor').html("%2.5");
+    $('#exampleModal').modal('show');
 }
 
 function getUrlParameter(sParam) {
