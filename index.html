@@ -14,6 +14,87 @@ body {
     height: 100%;
 }
 
+.modal-title {
+    
+    font-family: Roboto Condensed;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 28px;
+
+    color: #FFFFFF;
+
+}
+
+.modal-dadosgerais {
+    position: absolute;
+    width: 653px;
+    height: 398px;
+    left: 70px;
+    top: 40px;
+}
+
+.modal-dados1 {
+    position: absolute;
+    width: 433px;
+    height: 54px;
+    
+}
+
+.modal-dados2 {
+    position: absolute;
+    width: 251px;
+    height: 80px;   
+    top: 125px;
+    
+    
+}
+.modal-dados3 {
+    position: absolute;
+    width: 304px;
+    height: 85px;   
+    left: 335px;
+    top: 125px;
+}
+.modal-dados4 {
+    position: absolute;
+    width: 245px;
+    height: 115.27px;
+    top: 250px;
+    
+}
+
+.modal-dados5 {
+    position: absolute;
+    width: 313px;
+    height: 110px;
+    left: 335px;
+    top: 250px;
+    
+}
+
+.dados-dinheiro {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+
+    color: #4F4F4F;
+}
+
+.dados-nome {
+    font-family: Roboto Condensed;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 33px;
+
+    color: #146678;
+
+}
+
+
 #map {
     width: 100%;
     height: 100%;
@@ -284,7 +365,7 @@ h5.mb-0 button.btn.btn-link {
     margin-top: 11px;
 }
 .modal-body {
-    width: 680px;
+    width: 798px;
     height: 450px;
     background: #F2F2F2;
     box-shadow: -4px 4px 8px rgba(0, 0, 0, 0.15);
@@ -648,33 +729,58 @@ h5.mb-0 button.btn.btn-link {
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <input id="idInfoIndicador" type="number" style="display: none;">
-              <h5 class="modal-title" id="tituloModal">DETALHAMENTO DE DADOS</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                <input id="idInfoIndicador" type="number" style="display: none;">
+                <h5 class="modal-title" id="tituloModal">DETALHAMENTO DE DADOS</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body" id="modalBody">     
+                    <div class="modal-dadosgerais">
+
+                        <div class="modal-dados1">
+                            <span class="dados-nome" id="modalEstadoValor"></span>
+                            <span class="dados-nome">HABITANTES<br /></span> <span id="modalHabitantesValor"></span><br />
+                        </div>
+                        
+                                    
+                        <div class="modal-dados2">
+                            <span class="dados-nome">PIB<br /><span class="dados-dinheiro" id="modalPIBValor"></span></span><br />
+                        </div>
+                        
+        
+                        <div class="modal-dados3">
+                            <span class="dados-nome">PIB per capita<br /><span class="dados-dinheiro" id="modalPibPerCapita"></span></span><br />
+                        </div>
+                        
+                        
+                        <div class="modal-dados4">
+                            <span class="dados-nome">Rendimento<br /><span id="modalRendimentoValor"></span></span>
+                            <span class="dados-nome">MÉDIO<br /></span>
+                            <span class="dados-dinheiro" font-weight= bold id="modalRendimentoMedioF"></span><br />
+                            <span class="dados-dinheiro" font-weight= bold id="modalRendimentoMedioM"></span><br />
+                        </div>
+                        
+                        <div class="modal-dados5">
+                                <span class="dados-nome">SUPERIOR COMPLETO<br /></span><span id="modalSuperiorCompletoValor"></span><br />
+                        </div>
+                                
+                        
+
+                    </div>      
+                <!--
+                    <div id="modalEstadoValor"></div>
+                -->
+                
+                
+                <!--<div class="modal-footer">-->
+                <!--</div>-->
+                </div>
             </div>
-            <div class="modal-body" id="modalBody">           
-              <div id="modalEstadoValor"></div>
-              <span>HABITANTES<br /><span id="modalHabitantesValor"></span></span><br />
-              <br />
-              <span>PIB<br /><span id="modalPIBValor"></span></span><br />
-              <span>PIB per capita<br /><span id="modalPibPerCapita"></span></span><br />
-              <br />
-              <span>Rendimento<br /><span id="modalRendimentoValor"></span></span>
-              <span>MÉDIO<br /></span>
-              <span id="modalRendimentoMedioF"></span><br />
-              <span id="modalRendimentoMedioM"></span><br />
-              <br />
-              <span>SUPERIOR COMPLETO<br /><span id="modalSuperiorCompletoValor"></span></span><br />
-            </div>
-            <!--<div class="modal-footer">-->
-            <!--</div>-->
-          </div>
         </div>
-      </div>
+    </div>
 	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 	<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -761,10 +867,10 @@ function modalDetail(data){
 	$('#modalEstadoSigla').html(data);
     $('#modalHabitantesValor').html("3.873.743");
     $('#modalEstadoValor').html("AM");
-    $('#modalPIBValor').html("R$88668");
-    $('#modalPibPerCapita').html("R$10");
-    $('#modalRendimentoMedioF').html("R$20");
-    $('#modalRendimentoMedioM').html("R$25");
+    $('#modalPIBValor').html("R$86.668.642.000,00");
+    $('#modalPibPerCapita').html("R$22.373,40");
+    $('#modalRendimentoMedioF').html("R$1.364,89");
+    $('#modalRendimentoMedioM').html("R$940,69");
     $('#modalSuperiorCompletoValor').html("%2.5");
     $('#exampleModal').modal('show');
 }
