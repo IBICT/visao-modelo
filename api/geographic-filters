@@ -1,0 +1,28 @@
+[
+   {
+      "id":1067,
+      "name":"Norte",
+      "active":true,
+      "description":null,
+      "keyWord":null,
+      "date":null,
+      "source":"IBGE",
+      "dateChange":null,
+      "note":null,
+      "cidadePolo":null,
+      "metaDados":null,
+      "owner":{
+         "id":3,
+         "login":"admin",
+         "firstName":"Administrator",
+         "lastName":"Administrator",
+         "email":"admin@localhost",
+         "activated":true,
+         "langKey":"en",
+         "imageUrl":"",
+         "resetDate":null
+      },
+      "regions":null,
+      "categories":null
+   }
+]
