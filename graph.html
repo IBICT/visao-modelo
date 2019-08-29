@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>  
+<script>
+  var modalChart = new Object();
+  modalChart.data = new Object();
+  modalChart.animationEnabled = true;
+  modalChart.data.chartType = "doughnut";
+  modalChart.data.StartAngle = 60;
+  modalChart.data.IndexLabelFontSize = 17;
+  modalChart.data.IndexLabel = "{label} - #percent%";
+  modalChart.data.toolTipContent = "<b>{label}:</b> {y} (#percent%)";
+  modalChart.data.dataPoints = [
+      { y: 2, label: "Superior Completo" },
+      { y: 10, label: "Lin"},
+      { y: 98, label: "Outro" },
+    ];
+  window.onload = function () {
+
+  var chart = new CanvasJS.Chart("chartContainer", {
+    animationEnabled: true,
+    data: [{
+      type: modalChart.data.chartType,
+      startAngle: modalChart.data.StartAngle,
+      indexLabelFontSize: modalChart.data.IndexLabelFontSize,
+      indexLabel: modalChart.data.IndexLabel,
+      toolTipContent: modalChart.data.toolTipContent,
+      dataPoints: modalChart.data.dataPoints
+    }]
+  });
+  chart.render();
+}
+</script>
+</head>
+<body>
+<div id="chartContainer"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
