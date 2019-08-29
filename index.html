@@ -14,6 +14,91 @@ body {
     height: 100%;
 }
 
+
+.tabs-label3{
+
+    right: 92px;
+}
+
+.tabs-label2{
+
+    right: 231px;
+}
+
+.tabs-label1{
+
+    right: 327px;
+}
+
+
+.tabs {
+    width: 798px;
+    float: none;
+    list-style: none;
+    position: absolute;
+    margin: 5px 0 0 10px;
+    text-align: left;
+}   
+.tabs li {
+    float: left;
+    display: block;
+}
+.tabs input[type="radio"] {
+    position: absolute;
+    top: 0;
+    left: -9999px;
+}
+.tabs label {
+    display: block;
+    padding:0px,10px,20px; 
+    border-radius: 2px 2px 0 0;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+
+    text-align: center;
+    color: #146678;
+  
+    cursor: pointer;
+    position: absolute;
+    top: 4px;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.tabs .tabs-content {
+    z-index: 3;
+    display: none;
+    overflow: hidden;
+    width: 100%;
+    font-size: 17px;
+    line-height: 25px;
+    padding: 25px;
+    
+    top: 53px;
+    left: 0;
+  
+}
+ 
+.tabs [id^="tab"]:checked + label {
+    top: 0;
+    padding-top: 3px;
+    background: #146678;
+    color: #FFFFFF;
+}
+.tabs [id^="tab"]:checked ~ [id^="tab-content"] {
+    display: block;
+}
+
+
+
+
+
 .modal-title {
     
     font-family: Roboto Condensed;
@@ -72,6 +157,20 @@ body {
     top: 250px;
     
 }
+
+.link-fonte {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+
+    color: #59C9A8;
+}
+
 
 .dados-dinheiro {
     font-family: Roboto;
@@ -366,7 +465,7 @@ h5.mb-0 button.btn.btn-link {
 }
 .modal-body {
     width: 798px;
-    height: 450px;
+    height: 550px;
     background: #F2F2F2;
     box-shadow: -4px 4px 8px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
@@ -729,56 +828,130 @@ h5.mb-0 button.btn.btn-link {
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
+            
             <div class="modal-content">
                 <div class="modal-header">
-                <input id="idInfoIndicador" type="number" style="display: none;">
+                <input id="idInfoIndicador" type="number" style="display: none;" checked>
                 <h5 class="modal-title" id="tituloModal">DETALHAMENTO DE DADOS</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
-                <div class="modal-body" id="modalBody">     
-                    <div class="modal-dadosgerais">
+                
+                <div class="modal-body" id="modalBody"> 
+                    <div>
+                        <span class="dados-nome" id="modalInfoEscolhido"></span><br />
+                        <span class="dados-nome" id="modalInfo"></span> <span ></span>
 
-                        <div class="modal-dados1">
-                            <span class="dados-nome" id="modalEstadoValor"></span>
-                            <span class="dados-nome">HABITANTES<br /></span> <span id="modalHabitantesValor"></span><br />
-                        </div>
-                        
-                                    
-                        <div class="modal-dados2">
-                            <span class="dados-nome">PIB<br /><span class="dados-dinheiro" id="modalPIBValor"></span></span><br />
-                        </div>
-                        
-        
-                        <div class="modal-dados3">
-                            <span class="dados-nome">PIB per capita<br /><span class="dados-dinheiro" id="modalPibPerCapita"></span></span><br />
-                        </div>
-                        
-                        
-                        <div class="modal-dados4">
-                            <span class="dados-nome">Rendimento<br /><span id="modalRendimentoValor"></span></span>
-                            <span class="dados-nome">MÉDIO<br /></span>
-                            <span class="dados-dinheiro" font-weight= bold id="modalRendimentoMedioF"></span><br />
-                            <span class="dados-dinheiro" font-weight= bold id="modalRendimentoMedioM"></span><br />
-                        </div>
-                        
-                        <div class="modal-dados5">
-                                <span class="dados-nome">SUPERIOR COMPLETO<br /></span><span id="modalSuperiorCompletoValor"></span><br />
-                        </div>
+                    </div>
+                    <ul class="tabs" role="tablist">
+                        <li>
+                            <input type="radio" name="tabs" id="tab1" />
+                            <label for="tab1" 
+                                role="tab" 
+                                class="tabs-label1"
+                                aria-selected="true" 
+                                aria-controls="panel1" 
+                                tabindex="0">Ver histórico</label>
+                            <div id="tab-content1" 
+                                class="tabs-content" 
+                                role="tabpanel" 
+                                aria-labelledby="description" 
+                                aria-hidden="false">
+                            <p>Um gráfico</p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <input type="radio" name="tabs" id="tab2" />
+                            <label for="tab2"
+                                class="tabs-label2"  
+                                role="tab" 
+                                aria-selected="false" 
+                                aria-controls="panel2" 
+                                tabindex="0">Ver gráfico</label>
+                            <div id="tab-content2" 
+                                class="tabs-content"
+                                role="tabpanel" 
+                                aria-labelledby="specification" 
+                                aria-hidden="true">
+                                <p>Outro gráfico</p>
+                            </div>
+                        </li>
+                        <li>
+                            <input type="radio" name="tabs" id="tab3" />
+                            <label for="tab3"
+                                class="tabs-label3"
+                                role="tab" 
+                                aria-selected="false" 
+                                aria-controls="panel3" 
+                                tabindex="0">Ver dados gerais</label>
+                            <div id="tab-content3" 
+                                class="tabs-content"
+                                role="tabpanel" 
+                                aria-labelledby="specification" 
+                                aria-hidden="false">
                                 
+            
+                                
+                                            
+                                <div class="modal-dadosgerais">
+            
+                                    <div class="modal-dados1">
+                                        <span class="dados-nome" id="modalEstadoValor"></span>
+                                        <span class="dados-nome">HABITANTES<br /></span> <span id="modalHabitantesValor"></span><br />
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="modal-dados2">
+                                            <span class="dados-nome">PIB<br /><span class="dados-dinheiro" id="modalPIBValor"></span></span><br />
+                                        </div>
+                                        
+                        
+                                        <div class="modal-dados3">
+                                            <span class="dados-nome">PIB per capita<br /><span class="dados-dinheiro" id="modalPibPerCapita"></span></span><br />
+                                        </div>
+                                        
+                                        
+                                        <div class="modal-dados4">
+                                            <span class="dados-nome">Rendimento<br /><span id="modalRendimentoValor"></span></span>
+                                            <span class="dados-nome">MÉDIO<br /></span>
+                                            <span class="dados-dinheiro" font-weight= bold id="modalRendimentoMedioF"></span><br />
+                                            <span class="dados-dinheiro" font-weight= bold id="modalRendimentoMedioM"></span><br />
+                                        </div>
+                                        
+                                        <div class="modal-dados5">
+                                                <span class="dados-nome">SUPERIOR COMPLETO<br /></span><span id="modalSuperiorCompletoValor"></span><br />
+                                        </div>
+            
+                                    </div>            
+                                    
+                                    <p class="link-fonte"><a href="https://google.com">Fonte: .....</a></p>
+                                            
+                                    
+            
+                                </div>      
+                            <!--
+                                <div id="modalEstadoValor"></div>
+                            -->
+                            
+                            
+                            <!--<div class="modal-footer">-->
+                            <!--</div>-->
+                            </div>
                         
 
-                    </div>      
-                <!--
-                    <div id="modalEstadoValor"></div>
-                -->
-                
-                
-                <!--<div class="modal-footer">-->
-                <!--</div>-->
+
+            
+            
+                            
+                        </li>
+                        
+                    </ul>
+
                 </div>
             </div>
+
         </div>
     </div>
 	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -864,9 +1037,14 @@ getGeoJson();
 $(".leaflet-right.leaflet-bottom").css('right', '340px');
 
 function modalDetail(data){
+    //str = JSON.stringify(data);
+    
+    //console.log(str);
+    $('#modalInfoEscolhido').html("Pib per capita");
+    $('#modalInfo').html("R$22.373,40");
 	$('#modalEstadoSigla').html(data);
     $('#modalHabitantesValor').html("3.873.743");
-    $('#modalEstadoValor').html("AM");
+    $('#modalEstadoValor').html(data);
     $('#modalPIBValor').html("R$86.668.642.000,00");
     $('#modalPibPerCapita').html("R$22.373,40");
     $('#modalRendimentoMedioF').html("R$1.364,89");
@@ -1284,6 +1462,12 @@ function makeChart(rangeMap2) {
 		style: style_1,
 		onEachFeature: function (feature, layer) {
 			if (typeof indicatorArray[feature.geoCode] !== "undefined") {
+                
+                //debugar
+                // str = JSON.stringify(feature);
+                // str = JSON.stringify(feature, null, 4); // (Optional) beautiful indented output.
+                // console.log(str);
+
 
 			    var popupValue = '<div onclick="modalDetail(\''+feature.geoCode+'\')">' +
                     '<p id="box_'+feature.geoCode+'" class="title-popup">'+feature.properties.name+'</p>' +
