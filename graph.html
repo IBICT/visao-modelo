@@ -1,69 +1,28 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript" src="jquery-3.4.1.min.js"></script>  
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-
-  function modalChart(animationEnabled, chartType, startAngle, indexLabelFontSize, indexLabel, toolTipContent, dataPoints){
-
-    this.data = new Object();
-    this.createPieChart = createPieChart;
-
-    this.animationEnabled = animationEnabled;
-    this.data.chartType = chartType;
-    this.data.startAngle = startAngle;
-    this.data.indexLabelFontSize = indexLabelFontSize;
-    this.data.indexLabel =  indexLabel;
-    this.data.toolTipContent = toolTipContent;
-    this.data.dataPoints = dataPoints;
-  }
-
-  function createPieChart(id){
-    var chart = new CanvasJS.Chart(id, {
-      animationEnabled: this.animationEnabled,  
-      data: [{
-      indexLabelFormatter: function(e){
-              $("#"+e.dataPoint.label.replace(" ","")).html(e.dataPoint.label　+ "　"　+ e.percent.toFixed(2) + "%");     
-              return "" ;},
-        type: this.data.chartType,
-        startAngle: this.data.startAngle,
-        indexLabelFontSize: this.data.indexLabelFontSize,
-        indexLabel: this.data.indexLabel,
-        toolTipContent: this.data.toolTipContent,
-        dataPoints: this.data.dataPoints
-      }]
-    });
-  
-    chart.render();
-  }
-
-  window.onload = function () {
-
-    var mychart = new modalChart(
-      true, "doughnut",　270, 
-      17, "", 
-      "", 
-      [
-        { y: 2, label: "Superior Completo" },
-        { y: 10, label: "Lin"},
-        { y: 98, label: "Outro" },
-        { y: 100, label: "TESTE" },
-      ]);
-
-    mychart.createPieChart("chartContainer");
-
-
-
-  }
+$(document).ready(function(){
+  $("#hide").click(function(){
+    $("#modalDiv").hide();
+    $("#hide").hide();
+    $("#show").show();
+  });
+  $("#show").click(function(){
+    $("#show").hide();
+    $("#hide").show();
+    $("#modalDiv").show();
+  });
+});
 </script>
 </head>
 <body>
-<div id="chartContainer" style="height: 10rem; width: 10rem;"></div>
-<div id="SuperiorCompleto"></div>
-<div id="Lin"></div>
-<div id="Outro"></div>
-<p id="TESTE"></p>
-<script src="canvasjs.min.js"></script>
+
+<div id="modalDiv">If you click on the "Hide" button, I will disappear.</div>
+
+<button id="hide">Hide</button>
+<button id="show" hidden>Show</button>
+
 </body>
 </html>
