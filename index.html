@@ -174,6 +174,7 @@ body {
     position: relative;
     width: 6.9rem !important;
     height: 6.9rem !important;  
+    
 }
 
 
@@ -1054,14 +1055,18 @@ h5.mb-0 button.btn.btn-link {
                                             
                                             <div class="modal-dados5" >
                                                     
-                                                        <div id="chartContainer" ></div>
-                                                        <div style="left: 8rem; position:absolute;">
-                                                            <span id="SuperiorCompleto" class="dados-nome"></span><br />
-                                                            <!-- <span id="Lin" class="dados-nome"></span><br />
+                                                        <div id="chartContainer"  ></div>
+                                                        <div id="infosPieChart" class='dados-nome' style="font-size: 130%;left: 8rem; position:absolute;">
+                                                           
+                                                           
+                                                           
+                                                            <!--<span id="SuperiorCompleto" class="dados-nome"></span><br />
+                                                            <span id="Lin" class="dados-nome"></span><br />
                                                             <span id="Outro" class="dados-nome"></span><br />
                                                             <span id="TESTE" class="dados-nome"></span> -->
                                                         </div>
                                                         
+
                                                     <!-- <div style="position: relative; left: 7.5rem; top: 1rem;">
 
                                                         <span class="dados-nome">SUPERIOR<br /> COMPLETO<br /></span>
@@ -1217,13 +1222,20 @@ function modalDetail(data){
     this.data.dataPoints = dataPoints;
     }
 
-    function createPieChart(id){
-    var chart = new CanvasJS.Chart(id, {
-    animationEnabled: this.animationEnabled,  
+    function createPieChart(chartId,labelId){
+    var chart = new CanvasJS.Chart(chartId, {
+    animationEnabled: this.animationEnabled, 
+    backgroundColor: "#F2F2F2", 
     data: [{
     indexLabelFormatter: function(e){
-            $("#"+e.dataPoint.label.replace(" ","")).html(e.dataPoint.label　+ "　"　+ e.percent.toFixed(2) + "%");     
+            if(e.dataPoint.label!="Outro"){
+                $("#"+labelId).append("<span >"+e.dataPoint.label　+ "　"　+ e.percent.toFixed(2) + "%"+ "</span><br />");
+            }
+                
+               
             return "" ;},
+
+        
         type: this.data.chartType,
         startAngle: this.data.startAngle,
         indexLabelFontSize: this.data.indexLabelFontSize,
@@ -1244,12 +1256,16 @@ function modalDetail(data){
         "", 
         [
             { y: 2, label: "Superior Completo" },
-            // { y: 10, label: "Lin"},
+             //{ y: 10, label: "Lin"},
              { y: 98, label: "Outro" },
-            // { y: 100, label: "TESTE" },
+            //  { y: 100, label: "TESTE" },
+            //  { y: 100, label: "algo" },
+            //  { y: 100, label: "algo" },
+            //  { y: 100, label: "algo" },
+            //  { y: 100, label: "algo" },
         ]);
 
-        mychart.createPieChart("chartContainer");
+        mychart.createPieChart("chartContainer","infosPieChart");
 
 
 
