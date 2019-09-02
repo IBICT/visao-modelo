@@ -1105,7 +1105,8 @@ h5.mb-0 button.btn.btn-link {
 
         </div>
     </div>
-    
+
+    <script src="classes/ModalChart.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 	<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
@@ -1189,86 +1190,20 @@ var istance;
 getGeoJson();
 $(".leaflet-right.leaflet-bottom").css('right', '340px');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 function modalDetail(data){
-    //str = JSON.stringify(data);
     
-    //console.log(str);
-
-
-    function modalChart(animationEnabled, chartType, startAngle, indexLabelFontSize, indexLabel, toolTipContent, dataPoints){
-
-    this.data = new Object();
-    this.createPieChart = createPieChart;
-
-    this.animationEnabled = animationEnabled;
-    this.data.chartType = chartType;
-    this.data.startAngle = startAngle;
-    this.data.indexLabelFontSize = indexLabelFontSize;
-    this.data.indexLabel =  indexLabel;
-    this.data.toolTipContent = toolTipContent;
-    this.data.dataPoints = dataPoints;
-    }
-
-    function createPieChart(chartId,labelId){
-    var chart = new CanvasJS.Chart(chartId, {
-    animationEnabled: this.animationEnabled, 
-    backgroundColor: "#F2F2F2", 
-    data: [{
-    indexLabelFormatter: function(e){
-            if(e.dataPoint.label!="Outro"){
-                $("#"+labelId).append("<span >"+e.dataPoint.label　+ "　"　+ e.percent.toFixed(2) + "%"+ "</span><br />");
-            }
-                
-               
-            return "" ;},
-
-        
-        type: this.data.chartType,
-        startAngle: this.data.startAngle,
-        indexLabelFontSize: this.data.indexLabelFontSize,
-        indexLabel: this.data.indexLabel,
-        toolTipContent: this.data.toolTipContent,
-        dataPoints: this.data.dataPoints
-    }]
-    });
-
-    chart.render();
-    }
-    var ChartExists=true; 
+    // Deve ser passado como parametro se deve ou não ser criado um gráfico.
+    ChartExists=true; 
     if(ChartExists) {
-
-        var mychart = new modalChart(
+        var mychart = new ModalChart(
         false, "doughnut",　270, 
         17, "", 
         "", 
         [
             { y: 2, label: "Superior Completo" },
-             //{ y: 10, label: "Lin"},
              { y: 98, label: "Outro" },
-            //  { y: 100, label: "TESTE" },
-            //  { y: 100, label: "algo" },
-            //  { y: 100, label: "algo" },
-            //  { y: 100, label: "algo" },
-            //  { y: 100, label: "algo" },
         ]);
-
         mychart.createPieChart("chartContainer","infosPieChart");
-
-
-
     }
     
 
