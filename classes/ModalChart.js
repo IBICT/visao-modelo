@@ -51,14 +51,21 @@
         this.data.toolTipContent = toolTipContent;
         this.data.dataPoints = dataPoints;
     }
+    
+
 
     function createPieChart(chartId,labelId){
+        $("#"+labelId).html("");
+
+    
         var chart = new CanvasJS.Chart(chartId, {
         animationEnabled: this.animationEnabled, 
         backgroundColor: "#F2F2F2", 
         data: [{
+
         indexLabelFormatter: function(e){
-                if(e.dataPoint.label!="Outro"){
+                
+            if(e.dataPoint.label!="Outro"){
                     $("#"+labelId).append("<span >"+e.dataPoint.label　+ "　"　+ e.percent.toFixed(2) + "%"+ "</span><br />");
                 }                            
                 return "" ;},
@@ -72,4 +79,12 @@
         }]
         });
         chart.render();
+
+        
     }
+
+  
+
+    
+
+    

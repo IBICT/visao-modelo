@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
   $("#hide").click(function(){
-    $("#modalDiv").hide();
+    $("#modal-dadosgerais").hide();
     $("#hide").hide();
     $("#show").show();
   });
   $("#show").click(function(){
     $("#show").hide();
     $("#hide").show();
-    $("#modalDiv").show();
+    $("#modal-dadosgerais").show();
   });
 });
 </script>
 </head>
 <body>
 
-<div id="modalDiv">If you click on the "Hide" button, I will disappear.</div>
+<div id="modal-dadosgerais">If you click on the "Hide" button, I will disappear.</div>
 
 <button id="hide">Hide</button>
 <button id="show" hidden>Show</button>

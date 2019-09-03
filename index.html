@@ -16,6 +16,10 @@ body {
 
 
 
+.tabs-label4{
+
+    right: 20px;
+}
 
 .tabs-label3{
 
@@ -38,7 +42,7 @@ body {
     height: 25px;
     float: none;
     list-style: none;
-    position: absolute;
+    position: relative;
     margin: 5px 0 0 10px;
     text-align: left;
     border-bottom-style: outset;
@@ -89,12 +93,16 @@ body {
   
 }
  
+
+
+
 .tabs [id^="tab"]:checked + label {
     top: 0;
     padding-top: 3px;
     background: #146678;
     color: #FFFFFF;
 }
+
 .tabs [id^="tab"]:checked ~ [id^="tab-content"] {
     display: block;
 }
@@ -496,7 +504,7 @@ h5.mb-0 button.btn.btn-link {
 }
 .modal-body {
     width: 798px;
-    height: 550px;
+    /* height: 550px; */
     background: #F2F2F2;
     box-shadow: -4px 4px 8px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
@@ -849,13 +857,28 @@ h5.mb-0 button.btn.btn-link {
 
 	</style>
 
-
+    
 </head>
 <body>
     <div id="map">
         <div id ="loading" class="loader"></div>
     </div>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        
+        $("#hide").click(function(){
+            console.log("got here");
+        $("#modal-dadosgerais").hide();
+        $("#hide").hide();
+        $("#show").show();
+        });
+        $("#show").click(function(){
+        $("#show").hide();
+        $("#hide").show();
+        $("#modal-dadosgerais").show();
+        });
+       
+    </script>
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -878,10 +901,10 @@ h5.mb-0 button.btn.btn-link {
                          position:relative; left:10px;"></span>
 
                     </div>
-                    <div class="parte-tabela" style="width: 48rem; height: 28rem; position: relative;">
+                    <div class="parte-tabela" style="width: 48rem; position: relative;">
                         <ul class="tabs" role="tablist">
                             <li>
-                                <input type="radio" name="tabs" id="tab1" />    
+                                <input type="radio" name="tabs" id="tab1" onclick="voltarSetaInicial();"/>    
                                 <label for="tab1" 
                                     role="tab" 
                                     class="tabs-label1"
@@ -898,7 +921,7 @@ h5.mb-0 button.btn.btn-link {
                             </li>
                         
                             <li>
-                                <input type="radio" name="tabs" id="tab2" />
+                                <input type="radio" name="tabs" id="tab2" onclick="voltarSetaInicial();"/>
                                 <label for="tab2"
                                     class="tabs-label2"  
                                     role="tab" 
@@ -914,7 +937,7 @@ h5.mb-0 button.btn.btn-link {
                                 </div>
                             </li>
                             <li>
-                                <input type="radio" name="tabs" id="tab3" />
+                                <input type="radio" name="tabs" id="tab3" checked onclick="voltarSetaInicial();"/>
                                 <label for="tab3"
                                     class="tabs-label3"
                                     role="tab" 
@@ -930,8 +953,8 @@ h5.mb-0 button.btn.btn-link {
                 
                                     
                                                 
-                                    <div class="modal-dadosgerais">
-                
+                                    <div class="modal-dadosgerais" id="divtotal">
+                                        
                                         <div class="modal-dados1">
                                             <div style="position: absolute">
                                                 <span class="dados-nome" id="modalEstadoUF" style="font-family: Roboto Condensed;
@@ -1070,18 +1093,24 @@ h5.mb-0 button.btn.btn-link {
                                                     <!-- <div style="position: relative; left: 7.5rem; top: 1rem;">
 
                                                         <span class="dados-nome">SUPERIOR<br /> COMPLETO<br /></span>
-                                                        <!-- <span id="modalSuperiorCompletoValor"></span><br /> >
+                                                        <span id="modalSuperiorCompletoValor"></span><br /> >
                                                     </div>
                                                      -->
                                             </div>
                 
                                         </div>            
                                         
+
+
+                                       
+
                                         <p class="link-fonte"><a href="https://google.com">Fonte: .....</a></p>
                                                 
                                         
                 
                                     </div>      
+
+                                     
                                 <!--
                                     <div id="modalEstadoValor"></div>
                                 -->
@@ -1098,14 +1127,39 @@ h5.mb-0 button.btn.btn-link {
                                 
                             </li>
                             
+                       
+
+                            <li>
+                                <input type="radio" name="tabs" id="tab4" onclick="fechaAba();"/>
+                                <label for="tab4"
+                                    class="tabs-label4"  
+                                    role="tab" 
+                                    aria-selected="false" 
+                                    aria-controls="panel4" 
+                                    tabindex="0"
+                                    id="iconUp"><i id="seta" class="fa fa-sort-asc" aria-hidden="true"></i></label>
+                                <div id="tab-content4" 
+                                    class="tabs-content"
+                                    role="tabpanel" 
+                                    aria-labelledby="specification" 
+                                    aria-hidden="true">
+                                    
+                                </div>
+                            </li>
+                            
                         </ul>
+
+                       
                     </div>
+                      
+
                 </div>
             </div>
 
         </div>
     </div>
 
+    <script src="classes/Abas.js"></script>
     <script src="classes/ModalChart.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -1190,10 +1244,14 @@ var istance;
 getGeoJson();
 $(".leaflet-right.leaflet-bottom").css('right', '340px');
 
+
+
+
 function modalDetail(data){
     
     // Deve ser passado como parametro se deve ou não ser criado um gráfico.
     ChartExists=true; 
+
     if(ChartExists) {
         var mychart = new ModalChart(
         false, "doughnut",　270, 
