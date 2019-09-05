@@ -43,7 +43,10 @@ body {
     height: 10px;
     width: 200px;
     border-radius: 50px;
-    background-image: linear-gradient(to right, #e5c75a, #eeb248, #f69b3f, #fc833e, #ff6745);
+
+    background: linear-gradient(270deg, #146678 0%, #59C9A8 49.39%, #B563E8 100%);
+    box-shadow: -4px 4px 8px rgba(0, 0, 0, 0.15);
+    /* background-image: linear-gradient(to right, #e5c75a, #eeb248, #f69b3f, #fc833e, #ff6745); */
 }
 .range-bar-mark {
     position: relative;
@@ -85,15 +88,16 @@ body {
     color: #59c9a8;
 }
 .leaflet-top .leaflet-control-layers.leaflet-control {
-		position: relative;
-    top: 77.8vh;
+	position: relative;
+    bottom: -753px;
     width: 30px;
     height: 30px;
 }
 .leaflet-control-layers-toggle {
-	/* background-image: url(../content/images/mapas.png)!important; */ 
+	background-image: url(mapas.png)!important;
 	width: 30px !important;
 	height: 30px !important;
+    color: #59C9A8;
 }
 .leaflet-control-layers-expanded:first-child {
     position: absolute !important;
@@ -229,7 +233,48 @@ h5.mb-0 button.btn.btn-link {
     bottom: 35%;
     font-family: 'Roboto Condensed';
 }
+.input-group {
+    position: relative;
+    top:-32px
+}
 
+.entrada-pesq, #limpar{
+    display: none;
+}
+.icone-pesquisa {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #ffffff;
+    border-radius: 5px 0px 0px 5px;
+    background: white;
+
+}
+.entrada-pesq {
+    border: 2px solid #fff;
+    border-radius: 0px 5px 5px 0px !important;
+    margin-left: 3px;
+}
+.seleciona-status {
+    position: relative;
+    top: -30px
+
+}
+.range-status {
+    border-radius: 5px 0px 0px 5px;
+}
+
+#limpar {
+    /* position: relative;
+    right: 45px;
+    bottom: -5px; */
+}
+.range-status {
+    padding: 1.6px 6.6px;
+    background: #ffffff;
+    /* width: 30px;
+    height: 30px; */
+}
 /* map buttons */
 
 .leaflet-right .leaflet-control:first-child,
@@ -603,6 +648,9 @@ h5.mb-0 button.btn.btn-link {
     -webkit-animation: loading 500ms ease-out forwards infinite;
     animation: loading 500ms ease-out forwards infinite;
 }
+#seta-sidebar {
+    background-image:url()
+}
 
 @-webkit-keyframes loading {
     0% {
@@ -670,7 +718,8 @@ h5.mb-0 button.btn.btn-link {
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
 	<script>
 
 const host = "http://localhost:3000";
@@ -725,6 +774,7 @@ var baseLayers = {
     .addTo(map)
 };
 
+
 var layercontrol = L.control.layers(baseLayers,{}, {
     position: "topleft"
 }).addTo(map);
@@ -771,7 +821,7 @@ function getUrlParameter(sParam) {
 
 function getGeoJson(){
 	//usage in request
-	
+
 	//console.log(getUrlParameter('grupCategory'));
 	/*
 	$.ajax({
@@ -782,7 +832,7 @@ function getGeoJson(){
 		}
 	});
 	*/
-	
+
 	//http://teste.visao.ibict.br/api/categories?id.in=1&id.in=2&id.in=3&id.in=4
 	/*
 
@@ -795,7 +845,7 @@ $(function() {
         //heightStyle: 'fill', // http://jqueryui.com/accordion/#fillspace  -- Just sets the height of the accordion to the height of it's parent container.  We need a way to change the height of the parent to that of the newly added content.
         activate: function (e, ui) {
             // only fire when the accordion is opening..
-            if(ui.newHeader.length>0){                
+            if(ui.newHeader.length>0){
                 // only retrieve the remote content once..
                 if(! already_loaded[ui.newHeader[0].id]==1){
                     var srcObj = $(ui.newHeader[0]).children('a');
@@ -816,8 +866,8 @@ $(function() {
     });
 
 });
-	
-	
+
+
 	*/
 	$.ajax({
 		url: host+'/api/grup-categories/'+getUrlParameter('grupCategory'),
@@ -827,7 +877,7 @@ $(function() {
 			categories = istance.categories;
 			//var urlIndicator = '';
 			//console.log(categories);
-			
+
 			categories.filter(function (categoria) {
 				return categoria.type === 'INDICATOR';
 			}).forEach(function(item) {
@@ -1052,11 +1102,19 @@ getGradientColor = function(start_color, end_color, percent) {
 
 // get color depending on population density value
 function getColor(d) {
+
+  //   if(d >= minValue && d <= midValue){
+	// 	return getGradientColor('#e5c75a', '#f69b3f', (d - minValue) / (midValue - minValue));
+	// }else if (d > midValue && d <= maxValue) {
+	// 	return getGradientColor('#f69b3f', '#ff6745', (d - midValue) / (maxValue - midValue));
+	// }
+
 	if(d >= minValue && d <= midValue){
-		return getGradientColor('#e5c75a', '#f69b3f', (d - minValue) / (midValue - minValue));
+		return getGradientColor('#AC6DE1', '#8994C9', (d - minValue) / (midValue - minValue));
 	}else if (d > midValue && d <= maxValue) {
-		return getGradientColor('#f69b3f', '#ff6745', (d - midValue) / (maxValue - midValue));
-	}
+		return getGradientColor('#5AC7A9', '#176B7A', (d - midValue) / (maxValue - midValue));
+    }
+    
 	return '#CBD8DD';
 }
 
@@ -1067,6 +1125,7 @@ function getPercent(d) {
 
 // pinta a regiao
 function style_1(feature) {
+
 	return {
 		fillColor: getColor(matchKey(feature.geoCode, indicatorArray)),
 		weight: (feature.geoCode.toString().length > 2) ? 0.1 : 1,
@@ -1102,6 +1161,7 @@ function menuMapControl(){
     let pos2 = ($(".leaflet-right.leaflet-bottom").css('right') == '0px') ? '340px' : '0';
     $(".leaflet-right.leaflet-bottom").animate({right: pos2}, 800);
     $('#seta-sidebar').toggle();
+    console.log("aqui")
 }
 
 function rangeMap(select){
@@ -1203,6 +1263,8 @@ function makeChart(rangeMap2) {
 	});
 
 	$("#loading").hide();
+
+    $('.icone_pesquisa')
 
 	group.addLayer(route1Layer);
 	map.addLayer(group);
@@ -1583,12 +1645,20 @@ function makeMap() {
                         console.log("Empty DATAJSON")
                     }
 
+
                     // html do SELECT
-                    var selectRangeMapHtml = '<div class="input-group input-group-sm mb-3">' +
-                        '<div class="input-group-prepend">' +
-                        '<span style="margin-right:5px;" class="input-group-text fa fa-map input-leaflet" id="basic-addon1"></span>' +
-                        '</div>' +
-                        '<select onchange="rangeMap(this)" style="border-radius: 0 5px 5px 0; border-left:0;">';
+                    var selectRangeMapHtml = '<div class="input-group input-group-sm">'+
+                                             '<div class="form-inline input-group-prepend">'+
+                                             '<span class="input-group-text icone-pesquisa fa fa-search" id="inputGroup-sizing-sm" onclick="eventClickIcone()"></span>'+
+                                             '</div>'+
+                                             '<input type="search" class="form-control entrada-pesq" aria-label="Small" aria-describedby="inputGroup-sizing-sm"  placeholder="Busque um estado" onkeyup="eventKeyUpInput()"><span id="limpar" onclick="eventClickLimpar()">limpar x</span>'+
+                                             '</div>'+
+                                             '<div class="input-group-prepend seleciona-status">' +
+                                             '<span style="margin-right:2px;" class="range-status input-group-text fa fa-map-o input-leaflet" id="basic-addon1"></span>' +
+                                             '<select onchange="rangeMap(this)" style="border-radius: 0 5px 5px 0; border-left:0;">'+
+                                             '</div>';
+
+
 
                     itensSelect.forEach(function (iten) {
                         selectRangeMapHtml += iten;
@@ -1596,6 +1666,8 @@ function makeMap() {
 
                     selectRangeMapHtml += '</select>' +
                         '</div>';
+
+
                     // html do SELECT
 
                     // indicador Map control
@@ -1615,6 +1687,7 @@ function makeMap() {
 
                         return this._div;
                     }
+
                     indicadorMapControl.addTo(map);
 
                     // filtro Map control
@@ -1665,6 +1738,7 @@ function makeMap() {
                         this._div.innerHTML = selectRangeMapHtml;
 
                         L.DomEvent.addListener(this._div, 'dblclick', L.DomEvent.stop);
+
 
                         return this._div;
                     }
@@ -1889,6 +1963,39 @@ function loadFiltrosSelecionados(){
 
     return filtrosSelecionados;
 }
-	</script>
+
+    //Botao pesquisa
+    function eventClickIcone (){
+
+        // console.log("Valor verificador: "+verificador)
+        // let verificador = true;
+
+
+        // if(verificador == 1 || verificador == undefined){
+        $('.entrada-pesq').show();
+        verificador = 0;
+        // console.log("passou no true" + verificador);
+
+        // } else{
+        //     $('.entrada-pesq').hide();
+        //     verificador = true;
+        //     console.log("passou no false"+ verificador);
+        // }
+
+        // } while (condition);
+
+    }
+
+
+    function eventKeyUpInput () {
+        $('#limpar').show();
+    }
+    function eventClickLimpar () {
+        $(".entrada-pesq").val('');
+        $('#limpar').hide();
+    }
+
+    </script>
+
 </body>
 </html>
